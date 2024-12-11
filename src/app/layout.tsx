@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { CurrencyFormatterProvider } from "./providers/currency-formatter/provider";
+import { NumberFormatterProvider } from "./providers/number-formatter/provider";
 import { cookies } from "next/headers";
 
 const geistSans = Geist({
@@ -29,12 +29,12 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <CurrencyFormatterProvider
+        <NumberFormatterProvider
           initialLocale={initialLocale}
           initialCurrency={initialCurrency}
         >
           {children}
-        </CurrencyFormatterProvider>
+        </NumberFormatterProvider>
       </body>
     </html>
   );

@@ -21,7 +21,7 @@ type FormatNumberOptions = {
 };
 
 // Define the context properties
-type CurrencyFormatterContextProps = {
+type NumberFormatterContextProps = {
   locale: string;
   setLocale: (locale: string) => void;
   currency: string;
@@ -29,11 +29,11 @@ type CurrencyFormatterContextProps = {
 };
 
 // Create the context with default value as null
-const CurrencyFormatterContext =
-  createContext<CurrencyFormatterContextProps | null>(null);
+const NumberFormatterContext =
+  createContext<NumberFormatterContextProps | null>(null);
 
 // Define the provider component
-const CurrencyFormatterProvider = ({
+const NumberFormatterProvider = ({
   children,
   initialLocale = "en-US",
   initialCurrency = "USD",
@@ -57,22 +57,22 @@ const CurrencyFormatterProvider = ({
 
   // Provide the context values to children components
   return (
-    <CurrencyFormatterContext.Provider
+    <NumberFormatterContext.Provider
       value={{ locale, setLocale, currency, setCurrency }}
     >
       {children}
-    </CurrencyFormatterContext.Provider>
+    </NumberFormatterContext.Provider>
   );
 };
 
 // Custom hook to use the currency formatter context
-const useCurrencyFormatter = () => {
-  const context = useContext(CurrencyFormatterContext);
+const useNumberFormatter = () => {
+  const context = useContext(NumberFormatterContext);
 
   // Ensure the hook is used within the provider
   if (!context) {
     throw new Error(
-      "useCurrencyFormatter must be used within a CurrencyFormatterProvider."
+      "useNumberFormatter must be used within a NumberFormatterProvider."
     );
   }
 
@@ -164,4 +164,4 @@ const useCurrencyFormatter = () => {
   };
 };
 
-export { CurrencyFormatterProvider, useCurrencyFormatter };
+export { NumberFormatterProvider, useNumberFormatter };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCurrencyFormatter } from "./providers/currency-formatter/provider";
+import { useNumberFormatter } from "./providers/number-formatter/provider";
 
 const Page = () => {
   const {
@@ -10,7 +10,7 @@ const Page = () => {
     setLocale,
     locale,
     currency,
-  } = useCurrencyFormatter();
+  } = useNumberFormatter();
 
   return (
     <div className="flex flex-col gap-8 items-center justify-center">
