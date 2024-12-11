@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Format Currency NextJS
 
-## Getting Started
+This is a simple project to show how to format currency using a provider in NextJS, with several optimizations to make it fast and efficient.
 
-First, run the development server:
+## How It Works
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+The project uses a context provider to manage and format currency values throughout the application. This ensures that all currency values are formatted consistently according to the specified locale and currency type.
+
+### Key Components
+
+1. **CurrencyProvider**: This is the context provider that wraps the application and provides currency formatting functions to all child components.
+2. **useCurrency**: A custom hook that allows components to access the currency formatting functions provided by the `CurrencyProvider`.
+
+### Features
+
+- **Locale and Currency Configuration**: The provider can be configured with different locales and currency types, allowing for flexible formatting options.
+- **Consistent Formatting**: Ensures that all currency values are formatted consistently across the application.
+- **Easy Integration**: Simple to integrate into any NextJS project by wrapping your layout with the `CurrencyProvider`.
+- **SSR Friendly**: The provider works well with server-side rendering in NextJS, ensuring that it gets the values from the cookies for the initial load.
+- **Blazing Fast**: The provider is optimized for performance and ensures that the currency formatting is done efficiently by saving the formatter in memory, and reutilizing it across the application.
+
+## Usage
+
+1. Wrap your application with the CurrencyProvider:
+
+```jsx
+const Layout = ({ children }) => {
+    const cookieStore = await cookies();
+
+    const initialLocale = cookieStore.get("locale")?.value;
+    const initialCurrency = cookieStore.get("currency")?.value;
+
+    return (
+        <CurrencyProvider initialLocale={initialLocale} initialCurrency={initialCurrency}>
+            {children}
+        </CurrencyProvider>
+    );
+}
+
+export default MyApp;
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Use the useCurrency hook in your components:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```jsx
+import { useCurrency } from '../context/CurrencyContext';
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+const SomeComponent = () => {
+    const { formatCurrency, formatNumber, currency, setCurrency, locale, setLocale } = useCurrency();
+    const price = 1234.56;
 
-## Learn More
+    return <div>{formatCurrency(price, { maximumFractionDigits: 2 })}</div>;
+};
 
-To learn more about Next.js, take a look at the following resources:
+export default SomeComponent;
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Conclusion
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project demonstrates how to create a reusable currency formatting provider in NextJS. By using context and custom hooks, it ensures consistent and configurable currency formatting across the application.
